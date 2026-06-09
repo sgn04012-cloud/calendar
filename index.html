@@ -441,7 +441,7 @@ async function callClaude(prompt,img=null){
   const content=[];
   if(img)content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img}});
   content.push({type:'text',text:prompt});
-  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'한국 금융권 채용공고에서 일정 정보를 추출하세요.\nJSON 배열만 반환. 다른 텍스트 없이:\n[{"company":"기업명","job":"직무명","events":[{"type":"서류시작|서류마감|면접","date":"YYYY-MM-DDTHH:mm:ss"}],"link":"URL or null"}]\n시간 미기재시 T23:59:00.',messages:[{role:'user',content}]})});
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1000,system:'한국 금융권 채용공고에서 일정 정보를 추출하세요.\nJSON 배열만 반환. 다른 텍스트 없이:\n[{"company":"기업명","job":"직무명","events":[{"type":"서류시작|서류마감|면접","date":"YYYY-MM-DDTHH:mm:ss"}],"link":"URL or null"}]\n시간 미기재시 T23:59:00.',messages:[{role:'user',content}]})});
   if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API 오류');}
   const d=await r.json();
   return JSON.parse(d.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
